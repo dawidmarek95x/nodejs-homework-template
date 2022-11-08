@@ -29,10 +29,9 @@ app.use((err, req, res, next) => {
   });
 });
 
-const uriDb = process.env.DB_HOST;
-const PORT = process.env.PORT || 3000;
+const { PORT = 3000, DB_HOST: DB_URI } = process.env;
 
-const connection = mongoose.connect(uriDb, {
+const connection = mongoose.connect(DB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
