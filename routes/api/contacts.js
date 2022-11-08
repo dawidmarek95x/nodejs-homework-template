@@ -1,83 +1,19 @@
 const express = require("express");
-
-const actions = require("../../models/contacts.js");
-const { validationForAddingContact } = require("../../utils/validation");
-
 const router = express.Router();
+const contactsController = require("../../controllers/contactsCtrl");
+const validation = require("../../middlewares/contactsValidation");
+const authMiddleware = require("../../middlewares/auth");
 
-router.get("/", async (req, res, next) => {
-  const contacts = await actions.listContacts();
-  res.status(200).json({
-    data: { contacts },
-  });
-});
+router.get("/", authMiddleware, contactsController.getAll);
 
-router.get("/:contactId", async (req, res, next) => {
-  const { contactId } = req.params;
-  const contact = await actions.getContactById(contactId);
-  if (contact) {
-    return res.status(200).json({
-      data: { contact },
-    });
-  }
+router.get("/:contactId", contactsController.getOne);
 
-  res.status(404).json({
-    message: "Not found",
-  });
-});
+router.post("/", authMiddleware, validation.creatingContact, contactsController.addOne);
 
-router.post("/", async (req, res, next) => {
-  console.log(validationForAddingContact(req.body));
-  if (validationForAddingContact(req.body).error) {
-    return res.status(400).json({
-      message: "Missing required name field",
-    });
-  }
+router.delete("/:contactId", authMiddleware, contactsController.deleteOne);
 
-  const contact = await actions.addContact(req.body);
-  res.status(201).json({
-    data: { contact },
-  });
-});
+router.put("/:contactId", validation.updatingContact, contactsController.changeData);
 
-router.delete("/:contactId", async (req, res, next) => {
-  const { contactId } = req.params;
-  const contact = await actions.removeContact(contactId);
-
-  if (contact) {
-    return res.status(200).json({
-      message: "Contact deleted",
-    });
-  }
-
-  res.status(404).json({
-    message: "Not found",
-  });
-});
-
-router.put("/:contactId", async (req, res, next) => {
-  const { contactId } = req.params;
-  const contact = await actions.updateContact(contactId, req.body);
-
-  switch (contact) {
-    case "not-found":
-      res.status(404).json({
-        message: "Not found",
-      });
-      break;
-
-    case "bad-request":
-      res.status(400).json({
-        message: "Missing fields",
-      });
-      break;
-
-    default:
-      res.status(200).json({
-        data: { contact },
-      });
-      break;
-  }
-});
+router.patch("/:contactId/favorite", validation.updatingContactStatus, contactsController.changeValueOfFavorite);
 
 module.exports = router;
