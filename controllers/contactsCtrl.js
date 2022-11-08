@@ -1,8 +1,9 @@
-const service = require("../service/index");
+const contactsService = require("../services/contacts");
 
-const get = async (req, res, next) => {
+const getAll = async (req, res, next) => {
   try {
-    const contacts = await service.getAllContacts();
+    const { id } = req.user;
+    const contacts = await contactsService.getAllContacts(id, req.query);
     res.status(200).json(contacts);
   } catch (err) {
     next(err);
@@ -10,9 +11,9 @@ const get = async (req, res, next) => {
 };
 
 const getOne = async (req, res, next) => {
-  const { contactId } = req.params;
   try {
-    const contact = await service.getSingleContact(contactId);
+    const { contactId } = req.params;
+    const contact = await contactsService.getSingleContact(contactId);
     if (contact) {
       return res.status(200).json(contact);
     }
@@ -25,12 +26,20 @@ const getOne = async (req, res, next) => {
   }
 };
 
-const post = async (req, res, next) => {
+const addOne = async (req, res, next) => {
   try {
-    const contact = await service.createContact(req.body);
+    const { id } = req.user;
+    const newContact = await contactsService.createContact(id, req.body);
+
+    if (!newContact) {
+      return res.status(409).json({
+        message: "An identical contact is already in this user's collection.",
+      });
+    }
+
     res.status(201).json({
       message: "Contact was created",
-      data: contact,
+      data: newContact,
     });
   } catch (err) {
     next(err);
@@ -38,9 +47,10 @@ const post = async (req, res, next) => {
 };
 
 const deleteOne = async (req, res, next) => {
-  const { contactId } = req.params;
   try {
-    const contact = await service.deleteContact(contactId);
+    const { id: userId } = req.user;
+    const { contactId } = req.params;
+    const contact = await contactsService.deleteContact(userId, contactId);
 
     if (contact) {
       return res.status(200).json({
@@ -56,10 +66,10 @@ const deleteOne = async (req, res, next) => {
   }
 };
 
-const putOne = async (req, res, next) => {
-  const { contactId } = req.params;
+const changeData = async (req, res, next) => {
   try {
-    const contact = await service.updateContact(contactId, req.body);
+    const { contactId } = req.params;
+    const contact = await contactsService.updateContact(contactId, req.body);
 
     if (contact) {
       return res.status(200).json({
@@ -76,11 +86,11 @@ const putOne = async (req, res, next) => {
   }
 };
 
-const patchFavorite = async (req, res, next) => {
-  const { contactId } = req.params;
-  const { favorite } = req.body;
+const changeValueOfFavorite = async (req, res, next) => {
   try {
-    const contact = await service.updateContact(contactId, { favorite });
+    const { contactId } = req.params;
+    const { favorite } = req.body;
+    const contact = await contactsService.updateContact(contactId, { favorite });
 
     if (contact) {
       if (favorite) {
@@ -104,10 +114,10 @@ const patchFavorite = async (req, res, next) => {
 };
 
 module.exports = {
-  get,
+  getAll,
   getOne,
-  post,
+  addOne,
   deleteOne,
-  putOne,
-  patchFavorite,
+  changeData,
+  changeValueOfFavorite,
 };
