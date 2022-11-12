@@ -24,6 +24,7 @@ app.use((req, res, next) => {
       /api/users/logout - logout user, GET
       /api/users/current - current user, GET
       /api/users - change user's subscription, PATCH: { subscription }
+      /api/users//avatars - change user's avatar, PATCH: image file
       /api/contacts - all users, GET or create contact or POST: { name, email, phone }
       /api/contacts/:contactId - contact data, GET or delete contact, DELETE or change contact's data, PUT { name, email, phone }
       /api/contacts/:contactId/favorite - change contact's favorite, PATCH { favorite }`,
