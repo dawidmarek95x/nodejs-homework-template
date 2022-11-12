@@ -19,7 +19,7 @@ const registerUser = async (req, res, next) => {
     const newUser = await usersService.createNew(req.body);
 
     res.status(201).json({
-      message: `User created`,
+      message: "User created",
       user: {
         email: newUser.email,
         subscription: newUser.subscription,
