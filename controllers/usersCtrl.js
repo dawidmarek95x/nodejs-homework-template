@@ -7,7 +7,7 @@ const SECRET = process.env.SECRET_KEY;
 const usersService = require("../services/users");
 const isImage = require("../utils/isImage");
 
-const registerUser = async (req, res, next) => {
+const register = async (req, res, next) => {
   try {
     const { email } = req.body;
     const user = await usersService.findByEmail(email);
@@ -30,7 +30,7 @@ const registerUser = async (req, res, next) => {
   }
 };
 
-const loginUser = async (req, res, next) => {
+const login = async (req, res, next) => {
   try {
     const { email: enteredEmail, password: enteredPassword } = req.body;
 
@@ -65,7 +65,7 @@ const loginUser = async (req, res, next) => {
   }
 };
 
-const logoutUser = async (req, res, next) => {
+const logout = async (req, res, next) => {
   try {
     const { _id: id } = req.user;
     await usersService.updateToken(id);
@@ -75,7 +75,7 @@ const logoutUser = async (req, res, next) => {
   }
 };
 
-const getCurrentUser = async (req, res, next) => {
+const getCurrent = async (req, res, next) => {
   try {
     const { email, subscription, token: currentToken } = req.user;
     const { authorization } = req.headers;
@@ -96,7 +96,7 @@ const getCurrentUser = async (req, res, next) => {
   }
 };
 
-const subscribeUser = async (req, res, next) => {
+const setSubscription = async (req, res, next) => {
   try {
     const { id, email } = req.user;
     const { subscription } = req.body;
@@ -142,10 +142,10 @@ const setAvatar = async (req, res, next) => {
 };
 
 module.exports = {
-  registerUser,
-  loginUser,
-  logoutUser,
-  getCurrentUser,
-  subscribeUser,
+  register,
+  login,
+  logout,
+  getCurrent,
+  setSubscription,
   setAvatar,
 };

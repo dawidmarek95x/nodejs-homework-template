@@ -17,8 +17,7 @@ const createNew = async (body) => {
   return newUser;
 };
 
-const updateToken = async (id, token = null) =>
-  await User.findByIdAndUpdate(id, { token });
+const updateToken = async (id, token = null) => await User.findByIdAndUpdate(id, { token });
 
 const authenticateUser = async (token) => {
   try {
@@ -32,13 +31,9 @@ const authenticateUser = async (token) => {
   }
 };
 
-const updateSubscription = async (id, subscription) => {
-  await User.findByIdAndUpdate(id, { subscription });
-};
+const updateSubscription = async (id, subscription) => await User.findByIdAndUpdate(id, { subscription });
 
-const updateAvatar = async (id, avatarURL) => {
-  await User.findByIdAndUpdate(id, { avatarURL });
-};
+const updateAvatar = async (id, avatarURL) => await User.findByIdAndUpdate(id, { avatarURL });
 
 module.exports = {
   findByEmail,

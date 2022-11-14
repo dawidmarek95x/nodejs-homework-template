@@ -48,14 +48,14 @@ const validation = (schema, req, res, next) => {
   next();
 };
 
-const userRegistration = (req, res, next) =>
+const validateRegistration = (req, res, next) =>
   validation(registrationSchema, req, res, next);
-const userLogin = (req, res, next) => validation(loginSchema, req, res, next);
-const userSubscription = (req, res, next) =>
+const validateLogin = (req, res, next) => validation(loginSchema, req, res, next);
+const validateSubscription = (req, res, next) =>
   validation(subscriptionSchema, req, res, next);
 
 module.exports = {
-  userRegistration,
-  userLogin,
-  userSubscription,
+  validateRegistration,
+  validateLogin,
+  validateSubscription,
 };

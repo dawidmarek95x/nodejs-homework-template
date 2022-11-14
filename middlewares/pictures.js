@@ -25,10 +25,8 @@ const picturesMiddleware = (
     storage,
     fileFilter: (req, file, cb) => {
       const mimetype = file.mimetype;
-      if (!mimetypeAllowedList.includes(mimetype)) {
-        return cb(null, false);
-      }
-      return cb(null, true);
+      const isCompatibleMimetype = mimetypeAllowedList.includes(mimetype);
+      return cb(null, isCompatibleMimetype);
     },
   });
 
