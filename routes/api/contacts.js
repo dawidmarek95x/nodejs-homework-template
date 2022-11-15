@@ -14,15 +14,15 @@ const {
   validateStatusUpdate,
 } = require("../../middlewares/contactsValidation");
 
-const authMiddleware = require("../../middlewares/auth");
+const authenticateUser = require("../../middlewares/authenticateUser");
 
-router.get("/", authMiddleware, getAll);
+router.get("/", authenticateUser, getAll);
 
 router.get("/:contactId", getOne);
 
-router.post("/", authMiddleware, validateCreationOrUpdate, addOne);
+router.post("/", authenticateUser, validateCreationOrUpdate, addOne);
 
-router.delete("/:contactId", authMiddleware, deleteOne);
+router.delete("/:contactId", authenticateUser, deleteOne);
 
 router.put("/:contactId", validateCreationOrUpdate, changeData);
 

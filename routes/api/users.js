@@ -18,15 +18,15 @@ const {
   validateEmail,
 } = require("../../middlewares/usersValidation");
 
-const authMiddleware = require("../../middlewares/auth");
-const picturesMiddleware = require("../../middlewares/pictures");
+const authenticateUser = require("../../middlewares/authenticateUser");
+const verifyAndUploadImage = require("../../middlewares/verifyAndUploadImage");
 
 router.post("/signup", validateRegistration, register);
 router.post("/login", validateLogin, login);
-router.get("/logout", authMiddleware, logout);
-router.get("/current", authMiddleware, getCurrent);
-router.patch("/", authMiddleware, validateSubscription, setSubscription);
-router.patch("/avatars", authMiddleware, picturesMiddleware("avatar"), setAvatar);
+router.get("/logout", authenticateUser, logout);
+router.get("/current", authenticateUser, getCurrent);
+router.patch("/", authenticateUser, validateSubscription, setSubscription);
+router.patch("/avatars", authenticateUser, verifyAndUploadImage("avatar"), setAvatar);
 router.get("/verify/:verificationToken", verifyEmail);
 router.post("/verify", validateEmail, resendVerificationEmail)
 
