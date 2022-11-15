@@ -90,7 +90,9 @@ const changeValueOfFavorite = async (req, res, next) => {
   try {
     const { contactId } = req.params;
     const { favorite } = req.body;
-    const contact = await contactsService.updateContact(contactId, { favorite });
+    const contact = await contactsService.updateContact(contactId, {
+      favorite,
+    });
 
     if (contact) {
       if (favorite) {

@@ -35,15 +35,12 @@ const validation = (schema, req, res, next) => {
   next();
 };
 
-const creatingContact = (req, res, next) =>
+const validateCreationOrUpdate = (req, res, next) =>
   validation(schemaForCreateOrUpdateContact, req, res, next);
-const updatingContact = (req, res, next) =>
-  validation(schemaForCreateOrUpdateContact, req, res, next);
-const updatingContactStatus = (req, res, next) =>
+const validateStatusUpdate = (req, res, next) =>
   validation(schemaForUpdateContactStatus, req, res, next);
 
 module.exports = {
-  creatingContact,
-  updatingContact,
-  updatingContactStatus,
+  validateCreationOrUpdate,
+  validateStatusUpdate,
 };

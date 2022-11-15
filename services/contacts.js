@@ -40,7 +40,7 @@ const createContact = async (userId, body) => {
   }
 
   return await Contact.create({ ...body, owner: userId });
-}
+};
 
 const deleteContact = async (userId, contactId) => {
   let objectIdContact;
@@ -49,7 +49,10 @@ const deleteContact = async (userId, contactId) => {
   } catch (err) {
     return null;
   }
-  return await Contact.findOneAndDelete({ _id: objectIdContact, owner: userId });
+  return await Contact.findOneAndDelete({
+    _id: objectIdContact,
+    owner: userId,
+  });
 };
 
 const updateContact = async (contactId, body) => {

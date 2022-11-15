@@ -1,19 +1,35 @@
 const express = require("express");
 const router = express.Router();
-const contactsController = require("../../controllers/contactsCtrl");
-const validation = require("../../middlewares/contactsValidation");
+const {
+  getAll,
+  getOne,
+  addOne,
+  deleteOne,
+  changeData,
+  changeValueOfFavorite,
+} = require("../../controllers/contactsCtrl");
+
+const {
+  validateCreationOrUpdate,
+  validateStatusUpdate,
+} = require("../../middlewares/contactsValidation");
+
 const authMiddleware = require("../../middlewares/auth");
 
-router.get("/", authMiddleware, contactsController.getAll);
+router.get("/", authMiddleware, getAll);
 
-router.get("/:contactId", contactsController.getOne);
+router.get("/:contactId", getOne);
 
-router.post("/", authMiddleware, validation.creatingContact, contactsController.addOne);
+router.post("/", authMiddleware, validateCreationOrUpdate, addOne);
 
-router.delete("/:contactId", authMiddleware, contactsController.deleteOne);
+router.delete("/:contactId", authMiddleware, deleteOne);
 
-router.put("/:contactId", validation.updatingContact, contactsController.changeData);
+router.put("/:contactId", validateCreationOrUpdate, changeData);
 
-router.patch("/:contactId/favorite", validation.updatingContactStatus, contactsController.changeValueOfFavorite);
+router.patch(
+  "/:contactId/favorite",
+  validateStatusUpdate,
+  changeValueOfFavorite
+);
 
 module.exports = router;
