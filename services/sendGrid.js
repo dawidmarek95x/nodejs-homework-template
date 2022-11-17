@@ -21,12 +21,8 @@ const createMsg = (email, verificationToken, name) => {
 const sendEmail =  (email, verificationToken, name) => {
   sgMail
     .send(createMsg(email, verificationToken, name))
-    .then((res) => {
-      console.log(res);
-    })
-    .catch((err) => {
-      console.error(err);
-    });
+    .then(console.log)
+    .catch(console.error);
 };
 
 module.exports = sendEmail;
