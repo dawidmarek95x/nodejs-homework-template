@@ -37,6 +37,18 @@ const subscriptionSchema = Joi.object({
   subscription: Joi.string().valid("starter", "pro", "business").required(),
 });
 
+const verificationEmailSchema = Joi.object({
+  email: Joi.string()
+    .trim()
+    .email({
+      minDomainSegments: 2,
+    })
+    .pattern(
+      /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/
+    )
+    .required(),
+});
+
 const validation = (schema, req, res, next) => {
   const { error } = schema.validate(req.body);
   if (error) {
@@ -48,14 +60,14 @@ const validation = (schema, req, res, next) => {
   next();
 };
 
-const validateRegistration = (req, res, next) =>
-  validation(registrationSchema, req, res, next);
+const validateRegistration = (req, res, next) => validation(registrationSchema, req, res, next);
 const validateLogin = (req, res, next) => validation(loginSchema, req, res, next);
-const validateSubscription = (req, res, next) =>
-  validation(subscriptionSchema, req, res, next);
+const validateSubscription = (req, res, next) => validation(subscriptionSchema, req, res, next);
+const validateEmail = (req, res, next) => validation(verificationEmailSchema, req, res, next);
 
 module.exports = {
   validateRegistration,
   validateLogin,
   validateSubscription,
+  validateEmail,
 };

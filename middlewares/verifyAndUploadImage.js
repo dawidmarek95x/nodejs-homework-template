@@ -1,8 +1,8 @@
 const multer = require("multer");
 const setFileSize = require("../utils/setFileSize");
 
-const picturesMiddleware = (
-  postKey = "picture",
+const verifyAndUploadImage = (
+  postKey = "image",
   uploadDir = "tmp/",
   fileSizeLimit = setFileSize(5, "MB")
 ) => {
@@ -25,12 +25,12 @@ const picturesMiddleware = (
     storage,
     fileFilter: (req, file, cb) => {
       const mimetype = file.mimetype;
-      const isCompatibleMimetype = mimetypeAllowedList.includes(mimetype);
-      return cb(null, isCompatibleMimetype);
+      const hasCompatibleMimetype = mimetypeAllowedList.includes(mimetype);
+      return cb(null, hasCompatibleMimetype);
     },
   });
 
   return multerInstance.single(postKey);
 };
 
-module.exports = picturesMiddleware;
+module.exports = verifyAndUploadImage;
