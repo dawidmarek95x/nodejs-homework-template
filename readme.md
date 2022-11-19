@@ -1,7 +1,7 @@
 #  Connections API
 
 ## General info
-Server with implemented REST API for creating and managing users and their individual sets of contacts contained in the MongoDB database.
+Server project based on the REST API architecture for creating and managing users and their individual contact sets contained in the MongoDB database.
 
 ## Technologies
 **Project was created with:**
